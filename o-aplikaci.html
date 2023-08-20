@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Ondřej Šebesta">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+  <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <title>O aplikaci</title>
+</head>
+
+<body bgcolor="#00AACC">
+  <nav class="py-2 bg-body-tertiary border-bottom">
+    <div class="container d-flex flex-wrap">
+      <a href="/" class="d-flex align-items-center col-md-2 mx-2  link-body-emphasis text-decoration-none">
+        <span class="fs-4">O aplikaci</span>
+      </a>
+      <ul class="nav">
+        <li class="nav-item"><a href="index.html" class="nav-link link-body-emphasis px-2 active" aria-current="page">Úvod</a>
+        </li>
+        <li class="nav-item"><a href="#" class="nav-link link-body-emphasis px-2">O aplikaci</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div  class="bd-example-snippet pt-4 bd-code-snippet container col-12">
+    <div class="bd-example m-0 border-0">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Jméno</th>
+            <th scope="col">Příjmení</th>
+            <th scope="col">Věk</th>
+            <th scope="col">Telefon</th>
+            <th scope="col">Akce</th>
+          </tr>
+        </thead>
+        <tbody id="data-table">
+          <tr>
+            <th scope="row">1</th>
+            <td>Jan</td>
+            <td>Novák</td>
+            <td>35</td>
+            <td>123 456 789</td>
+            <td><button class="btn btn-sm btn-danger" onclick="deleteRow(this)">Smazat</button></td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Eva</td>
+            <td>Svobodová</td>
+            <td>28</td>
+            <td>987 654 321</td>
+            <td><button class="btn btn-sm btn-danger" onclick="deleteRow(this)">Smazat</button></td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Petr</td>
+            <td>Kovář</td>
+            <td>42</td>
+            <td>456 789 123</td>
+            <td><button class="btn btn-sm btn-danger" onclick="deleteRow(this)">Smazat</button></td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <!-- Formulář pro doplňování dat -->
+      <form id="data-form" class="row mt-4">
+        <div class="col-md-2">
+          <label for="jmeno">Jméno</label>
+          <input type="text" class="form-control" id="jmeno" placeholder="Zadejte jméno" required pattern="[A-Za-zá-žÁ-Ž\s]+">
+        </div>
+        <div class="col-md-2">
+          <label for="prijmeni">Příjmení</label>
+          <input type="text" class="form-control" id="prijmeni" placeholder="Zadejte příjmení" required pattern="[A-Za-zá-žÁ-Ž\s]+">
+        </div>
+        <div class="col-md-2">
+          <label for="vek">Věk</label>
+          <input type="number" class="form-control" id="vek" placeholder="Zadejte věk" required>
+        </div>
+        <div class="col-md-4">
+          <label for="telefon">Telefon</label>
+          <input type="text" class="form-control" id="telefon" placeholder="Zadejte telefonní číslo" required
+                 oninput="this.value = this.value.replace(/[^0-9 ]+/g, ''); this.value = this.value.replace(/(\d{3})(\d{3})(\d{3})/, '$1 $2 $3');">
+        </div>
+        <div id="ondra" class="col-md-2 mt-md-4">
+          <button type="submit" class="btn btn-primary">Přidat do tabulky</button>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Připojení Bootstrap skriptů (jQuery a Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+      crossorigin="anonymous"></script>
+
+    <script>
+      class Pojisteny {
+        constructor(id, jmeno, prijmeni, vek, telefon) {
+          this.id = id;
+          this.jmeno = jmeno;
+          this.prijmeni = prijmeni;
+          this.vek = vek;
+          this.telefon = telefon;
+        }
+        
+        toString() {
+          return `ID: ${this.id}, Jméno: ${this.jmeno}, Příjmení: ${this.prijmeni}, Věk: ${this.vek}, Telefon: ${this.telefon}`;
+        }
+      }
+      
+      $(document).ready(function () {
+        var idCounter = 3; // Počáteční hodnota počítadla ID
+        
+        $("#data-form").submit(function (event) {
+          event.preventDefault();
+          
+          var jmeno = $("#jmeno").val();
+          var prijmeni = $("#prijmeni").val();
+          var vek = $("#vek").val();
+          var telefon = $("#telefon").val();
+          
+          idCounter++;
+          
+          var pojisteny = new Pojisteny(idCounter, jmeno, prijmeni, vek, telefon);
+          saveToCSV(pojisteny);
+          addRowToTable(pojisteny);
+          
+          // Vyčištění polí formuláře
+          $("#jmeno").val("");
+          $("#prijmeni").val("");
+          $("#vek").val("");
+          $("#telefon").val("");
+        });
+      });
+      
+      function saveToCSV(pojisteny) {
+        var csvData = `${pojisteny.id},${pojisteny.jmeno},${pojisteny.prijmeni},${pojisteny.vek},${pojisteny.telefon}\n`;
+        $.ajax({
+          type: "POST",
+          url: "php/save.php", // Přizpůsobte cestu k PHP skriptu pro ukládání dat
+          data: { data: csvData },
+          success: function(response) {
+            console.log("Data uložena do souboru.");
+          }
+        });
+      }
+      
+      function addRowToTable(pojisteny) {
+        var newRow = $("<tr><th scope='row'>" + pojisteny.id + "</th><td>" + pojisteny.jmeno + "</td><td>" + pojisteny.prijmeni + "</td><td>" + pojisteny.vek + "</td><td>" + pojisteny.telefon + "</td><td><button class='btn btn-sm btn-danger' onclick='deleteRow(this)'>Smazat</button></td></tr>");
+        $("#data-table").append(newRow);
+      }
+      
+      function deleteRow(button) {
+        $(button).closest("tr").remove();
+      }
+    </script>
+  </div>
+</body>
+
+</html>

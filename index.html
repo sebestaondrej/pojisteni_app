@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Ondřej Šebesta">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+  <link href="assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <title>Pojištěnci</title>
+</head>
+
+<body>
+  <script src="pojisteni.js"></script>
+
+  <nav class="py-2 bg-body-tertiary border-bottom">
+    <div class="container d-flex flex-wrap">
+      <a href="index.html" class="d-flex align-items-center col-md-2 mx-2  link-body-emphasis text-decoration-none">
+        <span class="fs-4">Pojištěnci</span>
+      </a>
+    </div>
+  </nav>
+
+  <div class="bd-example-snippet pt-4 bd-code-snippet container col-12">
+    <div class="bd-example m-0 border-0">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Jméno</th>
+            <th scope="col">Příjmení</th>
+            <th scope="col">Věk</th>
+            <th scope="col">Telefon</th>
+          </tr>
+        </thead>
+        <tbody id="data-table">
+          <script>vypsatSeznam();</script>
+        </tbody>
+      </table>
+      
+      <!-- Formulář pro doplňování dat -->
+      <form id="data-form" class="row mt-4" onSubmit="pridatPojistence()">
+        <div class="col-md-2">
+          <label for="jmeno">Jméno</label>
+          <input type="text" class="form-control" id="jmeno" placeholder="Zadejte jméno" required>
+        </div>
+        <div class="col-md-2">
+          <label for="prijmeni">Příjmení</label>
+          <input type="text" class="form-control" id="prijmeni" placeholder="Zadejte příjmení" required>
+        </div>
+        <div class="col-md-2">
+          <label for="vek">Věk</label>
+          <input type="number" class="form-control" id="vek" placeholder="Zadejte věk" required>
+        </div>
+        <div class="col-md-4">
+          <label for="telefon">Telefon</label>
+          <input type="text" class="form-control" id="telefon" placeholder="Zadejte telefonní číslo" required>
+        </div>
+        <div class="col-md-2 mt-md-4">
+          <button type="submit" class="btn btn-primary">Přidat do tabulky</button>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Připojení Bootstrap skriptů (jQuery a Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+      crossorigin="anonymous"></script>
+  </div>
+</body>
+
+</html>
